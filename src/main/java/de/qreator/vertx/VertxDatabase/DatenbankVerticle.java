@@ -133,6 +133,7 @@ public class DatenbankVerticle extends AbstractVerticle {
         return erstellenFuture;
     }
 
+    
     private void überprüfeUser(Message<JsonObject> message) {
 
         String name = message.body().getString("name");
