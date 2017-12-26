@@ -40,14 +40,17 @@ $(document).ready(function () {
     });
 
    $(document).on("click", "#benutzererstellenknopf", function () {
-     
-if($("#passwort1").val()==$("#passwort2").val()){
-       $("body").html("Benutzer erstellt: " + $("#benutzername").val() + "       Passwort: " + $("#passwort1").val());
+   
        
+ if($("#passwort1").val()==$("#passwort2").val()){
+        $("body").html("Benutzer erstellt: " + $("#benutzername").val() + "       Passwort: " + $("#passwort1").val());
+ 
+           
 } else{
     $("body").append("<br>Passwort bitte überprüfen");
 }
 });
+
 
   
     $.post("../anfrage",
