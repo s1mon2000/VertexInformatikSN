@@ -22,37 +22,41 @@ $(document).ready(function () {
                             .append("<br><input type='button' value='logout' id='logout'/>");
                 } else {
                     $("body").append("<br>Die Anmeldedaten waren leider falsch!");
-                    
+
                 }
             }
         }
-                );
+        );
     });
-    
-     $(document).on("click", "#registrierungsknopf", function () {
+
+    $(document).on("click", "#registrierungsknopf", function () {
         $("body").html("Registriere dich<br>")
-       
-              .append("neuer Benutzername: <input type='text' id='benutzername'/><br>\n")
-            .append("gewünschtes Passwort: <input type='password' id='passwort1'/><br>\n")
-             .append("Passwort wiederholen: <input type='password' id='passwort2'/><br>\n")
-             .append("<input type='button' value='Benutzer erstellen' id='benutzererstellenknopf'/>");
-       
+                .append("neuer Benutzername: <input type='text' id='benutzername'/><br>\n")
+                .append("gewünschtes Passwort: <input type='password' id='passwort1'/><br>\n")
+                .append("Passwort wiederholen: <input type='password' id='passwort2'/><br>\n")
+                .append("<input type='button' value='Benutzer erstellen' id='benutzererstellenknopf'/>");
+
     });
 
-   $(document).on("click", "#benutzererstellenknopf", function () {
-   
-       
- if($("#passwort1").val()==$("#passwort2").val()){
-        $("body").html("Benutzer erstellt: " + $("#benutzername").val() + "       Passwort: " + $("#passwort1").val());
- 
-           
-} else{
-    $("body").append("<br>Passwort bitte überprüfen");
-}
-});
+    $(document).on("click", "#benutzererstellenknopf", function () {
+
+        if ($("#passwort1").val() == $("#passwort2").val()) {
+        
+            $("body").html("Benutzer erstellt: " + $("#benutzername").val() + " Passwort: " + $("#passwort1").val() + " <br>")
+                    .append("Einloggen<br>\nName: <input type='text' id='anmeldename'/><br>")
+                    .append("Passwort: <input type='password' id='passwort'/><br>\n")
+                    .append("<input type='button' value='OK' id='anmeldeknopf'/>\n")
+                    .append("<input type='button' value='Registrieren' id='registrierungsknopf'/><br>\n");
 
 
-  
+
+            
+        } else {
+            $("body").append("<br>Passwort bitte überprüfen");
+        }
+    });
+
+
     $.post("../anfrage",
             {
                 typ: "angemeldet"
@@ -66,7 +70,6 @@ $(document).ready(function () {
                                 .append("Passwort: <input type='password' id='passwort'/><br>\n")
                                 .append("<input type='button' value='OK' id='anmeldeknopf'/>\n")
                                 .append("<input type='button' value='Registrieren' id='registrierungsknopf'/><br>\n")
-                                
                     } else {
                         $("body").html("Gratulation, du bist angemeldet!")
                                 .append("<br><input type='button' value='logout' id='logout'/>");

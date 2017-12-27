@@ -38,7 +38,7 @@ public class DatenbankVerticle extends AbstractVerticle {
         dbClient = JDBCClient.createShared(vertx, config);
 
         Future<Void> datenbankFuture = erstelleDatenbank().compose(db -> erstelleUser("user", "geheim"));
-
+        
         datenbankFuture.setHandler(db -> {
             if (db.succeeded()) {
                 LOGGER.info("Datenbank initialisiert");
@@ -95,7 +95,7 @@ public class DatenbankVerticle extends AbstractVerticle {
 
     private Future<Void> erstelleUser(String name, String passwort) {
         Future<Void> erstellenFuture = Future.future();
-
+LOGGER.info("Benutzer erfolgreich erstellt");
         dbClient.getConnection(res -> {
             if (res.succeeded()) {
 
@@ -132,8 +132,8 @@ public class DatenbankVerticle extends AbstractVerticle {
         });
         return erstellenFuture;
     }
-
-    
+  
+     
     private void überprüfeUser(Message<JsonObject> message) {
 
         String name = message.body().getString("name");
