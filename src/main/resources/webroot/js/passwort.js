@@ -42,13 +42,11 @@ $(document).ready(function () {
 
         if ($("#passwort1").val() == $("#passwort2").val()) {
         
-            $("body").html("Benutzer erstellt: " + $("#benutzername").val() + " Passwort: " + $("#passwort1").val() + " <br>")
+            $("body").html("Benutzer erstellt: " + $("#benutzername").val() + "<br> Passwort: " + $("#passwort1").val() + " <br>")
                     .append("Einloggen<br>\nName: <input type='text' id='anmeldename'/><br>")
                     .append("Passwort: <input type='password' id='passwort'/><br>\n")
-                    .append("<input type='button' value='OK' id='anmeldeknopf'/>\n");
-                    
-
-
+                    .append("<input type='button' value='OK' id='anmeldeknopf'/>\n")
+              
 
             
         } else {
@@ -79,6 +77,10 @@ $(document).ready(function () {
                 }
             }
     );
+    
+    
+    
+    
 $(document).on("click", "#vergessenknopf", function () {
     $("body").html("Leider können wir die Tatsache nicht ändern, dass Sie ihr Passwort vergessen haben. Hier zur Aufmunterung ein kleines Bild")
             .append("<br><input type='image' src='https://i.pinimg.com/736x/2c/d8/77/2cd8770926c40117f5660d73ad1daace--facebook-com.jpg'/>");
