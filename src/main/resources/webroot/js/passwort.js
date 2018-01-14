@@ -41,14 +41,15 @@ $(document).ready(function () {
     $(document).on("click", "#benutzererstellenknopf", function () {
 
         if ($("#passwort1").val() == $("#passwort2").val()) {
-        
-            $("body").html("Benutzer erstellt: " + $("#benutzername").val() + "<br> Passwort: " + $("#passwort1").val() + " <br>")
+          
+            String; name = ($("#benutzername").val());
+            
+            $("body").html("Benutzer erstellt: " + name + "<br> Passwort: " + $("#passwort1").val() + " <br>")
                     .append("Einloggen<br>\nName: <input type='text' id='anmeldename'/><br>")
                     .append("Passwort: <input type='password' id='passwort'/><br>\n")
-                    .append("<input type='button' value='OK' id='anmeldeknopf'/>\n")
+                    .append("<input type='button' value='OK' id='anmeldeknopf'/>\n");
               
-
-            
+                
         } else {
             $("body").append("<br>Passwort bitte überprüfen");
         }
