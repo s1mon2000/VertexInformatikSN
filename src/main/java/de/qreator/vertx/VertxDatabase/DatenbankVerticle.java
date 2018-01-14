@@ -36,9 +36,9 @@ public class DatenbankVerticle extends AbstractVerticle {
                 .put("driver_class", "org.h2.Driver");
 
         dbClient = JDBCClient.createShared(vertx, config);
-
-        Future<Void> datenbankFuture = erstelleDatenbank().compose(db -> erstelleUser("user", "geheim"));
        
+        Future<Void> datenbankFuture = erstelleDatenbank().compose(db -> erstelleUser("user", "geheim"));
+      Future<Void> neuerUser = erstelleUser("test", "test");
         
        
         datenbankFuture.setHandler(db -> {
@@ -95,6 +95,7 @@ public class DatenbankVerticle extends AbstractVerticle {
         return erstellenFuture;
     }
 
+  
     private Future<Void> erstelleUser(String name, String passwort) {
         Future<Void> erstellenFuture = Future.future();
 LOGGER.info("Benutzer erfolgreich erstellt");
