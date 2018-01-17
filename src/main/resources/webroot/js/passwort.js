@@ -41,18 +41,33 @@ $(document).ready(function () {
     $(document).on("click", "#benutzererstellenknopf", function () {
 
         if ($("#passwort1").val() == $("#passwort2").val()) {
-          
-            String; name = ($("#benutzername").val());
+           $.post("../anfrage", {
+            typ: "registrierungsdaten",
+            benutzername: $("#benutzername").val(),
+            passwort1: $("#passwort1").val()
+        }, function (data) {
+            if (data.typ == "bestätigung") {
+                if (data.text == "richtig") {
+             //if ($("#passwort1").val() == $("#passwort2").val()) {
+                   String; name = ($("#benutzername").val());
             
             $("body").html("Benutzer erstellt: " + name + "<br> Passwort: " + $("#passwort1").val() + " <br>")
                     .append("Einloggen<br>\nName: <input type='text' id='anmeldename'/><br>")
                     .append("Passwort: <input type='password' id='passwort'/><br>\n")
                     .append("<input type='button' value='OK' id='anmeldeknopf'/>\n");
-              
-                
-        } else {
-            $("body").append("<br>Passwort bitte überprüfen");
+                } else {
+                    $("body").append("<br>fehler");
+
+                }
+            }
+           
         }
+        );
+        }
+            else {
+                    $("body").append("<br>passwort bitte überprüfen");
+
+                }
    
 });
 
