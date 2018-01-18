@@ -16,7 +16,7 @@ public class DatenbankVerticle extends AbstractVerticle {
     private static final String SQL_NEUE_TABELLE = "create table if not exists user(id int auto_increment,name varchar(20) not null, passwort varchar(20) not null,primary key(name))";
     private static final String SQL_ÜBERPRÜFE_PASSWORT = "select passwort from user where name=?";
     private static final String SQL_ÜBERPRÜFE_EXISTENZ_USER = "select name from user where name=?";
-
+private static final String SQL_DELETE =                "Drop table user";
     private static final String EB_ADRESSE = "vertxdatabase.eventbus";
 
     private enum ErrorCodes {
@@ -37,8 +37,8 @@ public class DatenbankVerticle extends AbstractVerticle {
 
         dbClient = JDBCClient.createShared(vertx, config);
        
-        Future<Void> datenbankFuture = erstelleDatenbank().compose(db -> erstelleUser("user", "geheim"));
-      Future<Void> neuerUser = erstelleUser("test", "test");
+        Future<Void> datenbankFuture = erstelleDatenbank();//.compose(db -> erstelleUser("user", "geheim"));
+     // Future<Void> neuerUser = erstelleUser("test", "test");
         
        
         datenbankFuture.setHandler(db -> {
@@ -67,7 +67,9 @@ public class DatenbankVerticle extends AbstractVerticle {
             case "ueberpruefe-passwort":
                 überprüfeUser(message);
                 break;
-
+            case "erstelleUser": // Jan Benecke
+                erstelleNeuenUser(message);
+                break;
             default:
                 message.fail(ErrorCodes.SCHLECHTE_AKTION.ordinal(), "Schlechte Aktion: " + action);
         }
@@ -136,7 +138,27 @@ LOGGER.info("Benutzer erfolgreich erstellt");
         return erstellenFuture;
     }
   
-     
+     private void erstelleNeuenUser(Message<JsonObject> message){ 
+            String name = message.body().getString("name");
+        String passwort = message.body().getString("passwort");
+    
+ 
+        Future<Void> userErstelltFuture = erstelleUser(name, passwort);
+        userErstelltFuture.setHandler(reply -> {
+            if (reply.succeeded()) {
+                LOGGER.info("Verbindung vorhanden");
+                message.reply(new JsonObject().put("REGsuccess", Boolean.TRUE));
+            } else {
+                String grund = reply.cause().toString();
+                LOGGER.info(grund);
+                if (grund.equals("user existiert")) {
+                    LOGGER.info("REG: reply (negative) sent");
+                    message.reply(new JsonObject().put("REGsuccess", Boolean.FALSE));
+                }
+            }
+
+        });
+}
     private void überprüfeUser(Message<JsonObject> message) {
 
         String name = message.body().getString("name");

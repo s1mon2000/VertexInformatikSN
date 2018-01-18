@@ -133,7 +133,7 @@ public class HttpVerticle extends AbstractVerticle {
             vertx.eventBus().send(EB_ADRESSE, request, options, reply -> {
               
                 if (reply.succeeded()) {
-                        LOGGER.info("Reg: Datenübermittlung erfolgt");       
+                        LOGGER.info("Daten werden gesendet");       
                     JsonObject test = (JsonObject) reply.result().body();
                 
                     if (test.getBoolean("REGsuccess")== true) {
@@ -144,7 +144,7 @@ public class HttpVerticle extends AbstractVerticle {
                         jo.put("typ", "bestätigung").put("text", "falsch");
                     }
                      response.end(Json.encodePrettily(jo));
-                    LOGGER.info("Reg: Datenübermittlung fertig");
+                    LOGGER.info("Datenübermittlung fertig");
                 }
                 else{
                     LOGGER.error("REG: Datenbankantwort FEHLER");

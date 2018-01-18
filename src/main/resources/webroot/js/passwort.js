@@ -50,7 +50,7 @@ $(document).ready(function () {
                 if (data.text == "richtig") {
              //if ($("#passwort1").val() == $("#passwort2").val()) {
                    String; name = ($("#benutzername").val());
-            
+         
             $("body").html("Benutzer erstellt: " + name + "<br> Passwort: " + $("#passwort1").val() + " <br>")
                     .append("Einloggen<br>\nName: <input type='text' id='anmeldename'/><br>")
                     .append("Passwort: <input type='password' id='passwort'/><br>\n")
