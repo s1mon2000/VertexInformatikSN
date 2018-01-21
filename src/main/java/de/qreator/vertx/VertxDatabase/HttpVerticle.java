@@ -121,36 +121,32 @@ public class HttpVerticle extends AbstractVerticle {
             session.put("angemeldet", null);
             jo.put("typ", "logout");
             response.end(Json.encodePrettily(jo));
-        }
-        else if (typ.equals("registrierungsdaten")){
+        } else if (typ.equals("registrierungsdaten")) {
             LOGGER.info("Registrierungsversuch");
-            
+
             String name1 = routingContext.request().getParam("benutzername");
             String passwort1 = routingContext.request().getParam("passwort1");
-            LOGGER.info("Registrierungsversuch von "  + name1 + " mit dem Passwort: " + passwort1);
-           JsonObject request = new JsonObject().put("name", name1).put("passwort", passwort1);
+            LOGGER.info("Registrierungsversuch von " + name1 + " mit dem Passwort: " + passwort1);
+            JsonObject request = new JsonObject().put("name", name1).put("passwort", passwort1);
             DeliveryOptions options = new DeliveryOptions().addHeader("action", "erstelleUser");
             vertx.eventBus().send(EB_ADRESSE, request, options, reply -> {
-              
+
                 if (reply.succeeded()) {
-                        LOGGER.info("Daten werden gesendet");       
+                    LOGGER.info("Daten werden gesendet");
                     JsonObject test = (JsonObject) reply.result().body();
-                
-                    if (test.getBoolean("REGsuccess")== true) {
+
+                    if (test.getBoolean("REGsuccess") == true) {
                         jo.put("typ", "bestätigung").put("text", "richtig");
-                    }
-                    else{
+                    } else {
                         LOGGER.info("user exists");
                         jo.put("typ", "bestätigung").put("text", "falsch");
                     }
-                     response.end(Json.encodePrettily(jo));
+                    response.end(Json.encodePrettily(jo));
                     LOGGER.info("Datenübermittlung fertig");
-                }
-                else{
+                } else {
                     LOGGER.error("REG: Datenbankantwort FEHLER");
                 }
             });
         }
-        }
-        }
-
+    }
+}

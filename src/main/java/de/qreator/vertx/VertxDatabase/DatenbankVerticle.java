@@ -16,7 +16,7 @@ public class DatenbankVerticle extends AbstractVerticle {
     private static final String SQL_NEUE_TABELLE = "create table if not exists user(id int auto_increment,name varchar(20) not null, passwort varchar(20) not null,primary key(name))";
     private static final String SQL_ÜBERPRÜFE_PASSWORT = "select passwort from user where name=?";
     private static final String SQL_ÜBERPRÜFE_EXISTENZ_USER = "select name from user where name=?";
-private static final String SQL_DELETE =                "Drop table user";
+    private static final String SQL_DELETE = "Drop table user";
     private static final String EB_ADRESSE = "vertxdatabase.eventbus";
 
     private enum ErrorCodes {
@@ -36,11 +36,10 @@ private static final String SQL_DELETE =                "Drop table user";
                 .put("driver_class", "org.h2.Driver");
 
         dbClient = JDBCClient.createShared(vertx, config);
-       
+
         Future<Void> datenbankFuture = erstelleDatenbank();//.compose(db -> erstelleUser("user", "geheim"));
-     // Future<Void> neuerUser = erstelleUser("test", "test");
-        
-       
+        // Future<Void> neuerUser = erstelleUser("test", "test");
+
         datenbankFuture.setHandler(db -> {
             if (db.succeeded()) {
                 LOGGER.info("Datenbank initialisiert");
@@ -67,7 +66,7 @@ private static final String SQL_DELETE =                "Drop table user";
             case "ueberpruefe-passwort":
                 überprüfeUser(message);
                 break;
-            case "erstelleUser": // Jan Benecke
+            case "erstelleUser":
                 erstelleNeuenUser(message);
                 break;
             default:
@@ -97,10 +96,9 @@ private static final String SQL_DELETE =                "Drop table user";
         return erstellenFuture;
     }
 
-  
     private Future<Void> erstelleUser(String name, String passwort) {
         Future<Void> erstellenFuture = Future.future();
-LOGGER.info("Benutzer erfolgreich erstellt");
+        LOGGER.info("Benutzer erfolgreich erstellt");
         dbClient.getConnection(res -> {
             if (res.succeeded()) {
 
@@ -137,12 +135,11 @@ LOGGER.info("Benutzer erfolgreich erstellt");
         });
         return erstellenFuture;
     }
-  
-     private void erstelleNeuenUser(Message<JsonObject> message){ 
-            String name = message.body().getString("name");
+
+    private void erstelleNeuenUser(Message<JsonObject> message) {
+        String name = message.body().getString("name");
         String passwort = message.body().getString("passwort");
-    
- 
+
         Future<Void> userErstelltFuture = erstelleUser(name, passwort);
         userErstelltFuture.setHandler(reply -> {
             if (reply.succeeded()) {
@@ -158,7 +155,8 @@ LOGGER.info("Benutzer erfolgreich erstellt");
             }
 
         });
-}
+    }
+
     private void überprüfeUser(Message<JsonObject> message) {
 
         String name = message.body().getString("name");
