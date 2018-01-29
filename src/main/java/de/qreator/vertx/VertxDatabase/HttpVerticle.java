@@ -20,9 +20,14 @@ import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
+import java.io.ByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import javax.xml.bind.DatatypeConverter;
 /**
  *
  * @author menze
@@ -93,11 +98,31 @@ public class HttpVerticle extends AbstractVerticle {
             }
             response.end(Json.encodePrettily(jo));
         } else if (typ.equals("anmeldedaten")) {
+            
+            
+            
             String name = routingContext.request().getParam("anmeldename");
-            String passwort = routingContext.request().getParam("passwort");
-            LOGGER.info("Anmeldeanfrage von User " + name + " mit dem Passwort " + passwort);
+            
+            
+                        
+            String passwort1=routingContext.request().getParam("passwort");
+InputStream stream = new ByteArrayInputStream(passwort1
+        .getBytes(StandardCharsets.UTF_8));
+String passworthash="";
 
-            JsonObject request = new JsonObject().put("name", name).put("passwort", passwort);
+try {
+    
+     passworthash = Hash.checksum(stream, "SHA-256");
+    LOGGER.info("hash: " + passworthash);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+            
+            
+   
+            LOGGER.info("Anmeldeanfrage von User " + name + " mit dem Passwort " + passworthash);
+
+            JsonObject request = new JsonObject().put("name", name).put("passwort", passworthash);
 
             DeliveryOptions options = new DeliveryOptions().addHeader("action", "ueberpruefe-passwort");
             vertx.eventBus().send(EB_ADRESSE, request, options, reply -> {
@@ -123,11 +148,27 @@ public class HttpVerticle extends AbstractVerticle {
             response.end(Json.encodePrettily(jo));
         } else if (typ.equals("registrierungsdaten")) {
             LOGGER.info("Registrierungsversuch");
+                
+            
+            String passwort1=routingContext.request().getParam("passwort1");
+InputStream stream = new ByteArrayInputStream(passwort1
+        .getBytes(StandardCharsets.UTF_8));
+String passworthash="";
 
+try {
+    
+     passworthash = Hash.checksum(stream, "SHA-256");
+    LOGGER.info("hash: " + passworthash);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+            
+            
+            
             String name1 = routingContext.request().getParam("benutzername");
-            String passwort1 = routingContext.request().getParam("passwort1");
-            LOGGER.info("Registrierungsversuch von " + name1 + " mit dem Passwort: " + passwort1);
-            JsonObject request = new JsonObject().put("name", name1).put("passwort", passwort1);
+            
+            LOGGER.info("Registrierungsversuch von " + name1 + " mit dem Passwort: " + passworthash);
+            JsonObject request = new JsonObject().put("name", name1).put("passwort", passworthash);
             DeliveryOptions options = new DeliveryOptions().addHeader("action", "erstelleUser");
             vertx.eventBus().send(EB_ADRESSE, request, options, reply -> {
 

@@ -103,8 +103,12 @@ $(document).ready(function () {
     $(document).on("click", "#benutzererstellenknopf", function () {
 
         if ($("#passwort1").val() == $("#passwort2").val()) {
-            String;
-            name = ($("#benutzername").val());
+           
+           var name = ($("#benutzername").val());
+            
+          
+            
+            
             
             $.post("../anfrage", {
                 typ: "registrierungsdaten",
